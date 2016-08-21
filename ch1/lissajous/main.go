@@ -1,4 +1,4 @@
-// Copyright © 2016 Alan A. A. Donovan & Brian W. Kernighan.
+// Copyright © 2015 Alan A. A. Donovan & Brian W. Kernighan.
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 // Run with "web" command-line argument for web server.
@@ -51,18 +51,24 @@ func main() {
 		//!-http
 		log.Fatal(http.ListenAndServe("localhost:8000", nil))
 		return
+	} else {
+		//!+main
+		out, err := os.Create("out.gif")
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		lissajous(out)
 	}
-	//!+main
-	lissajous(os.Stdout)
 }
 
 func lissajous(out io.Writer) {
 	const (
 		cycles  = 5     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
-		size    = 100   // image canvas covers [-size..+size]
-		nframes = 64    // number of animation frames
-		delay   = 8     // delay between frames in 10ms units
+		size    = 199   // image canvas covers [-size..+size]
+		nframes = 128   // number of animation frames
+		delay   = 5     // delay between frames in 10ms units
 	)
 	freq := rand.Float64() * 3.0 // relative frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
