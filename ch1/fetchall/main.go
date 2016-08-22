@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -30,6 +31,9 @@ func main() {
 
 func fetch(url string, ch chan<- string) {
 	start := time.Now()
+	if !strings.HasPrefix(url, "http://") {
+		url = "http://" + url
+	}
 	resp, err := http.Get(url)
 	if err != nil {
 		ch <- fmt.Sprint(err) // send to channel ch
