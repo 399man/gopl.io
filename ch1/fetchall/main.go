@@ -29,12 +29,16 @@ func main() {
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
 
-func fetch(url string, ch chan<- string) {
-	start := time.Now()
+func normalizeURL(url string) string {
 	if !strings.HasPrefix(url, "http://") {
 		url = "http://" + url
 	}
-	resp, err := http.Get(url)
+	return url
+}
+
+func fetch(url string, ch chan<- string) {
+	start := time.Now()
+	resp, err := http.Get(normalizeURL(url))
 	if err != nil {
 		ch <- fmt.Sprint(err) // send to channel ch
 		return
